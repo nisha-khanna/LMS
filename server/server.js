@@ -13,15 +13,25 @@ await connectDB()
 
 //Middlewares
 app.use(cors())
-// Instead of express.json()
-app.post("/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
-
 
 //Routes
 app.get('/', (req, res) => res.send("API Working"))
 app.post('/clerk', express.json(), clerkWebhooks)
 
-
+// ✅ Test route for inserting dummy user
+app.get('/test', async (req, res) => {
+  try {
+    await User.create({
+      _id: "abc123",
+      email: "demo@example.com",
+      name: "Demo User",
+      imageUrl: "https://example.com/test.png"
+    })
+    res.send("Inserted demo user!")
+  } catch (err) {
+    res.status(500).send("Error inserting test user: " + err.message)
+  }
+})
 
 //Port
 const PORT = process.env.PORT || 5000
