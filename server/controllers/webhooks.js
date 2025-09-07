@@ -7,7 +7,7 @@ export const clerkWebhooks = async (req, res) => {
     const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
 
     // Verify webhook signature
-    const payload = req.body.toString(); // convert Buffer → string
+    const payload = req.body.toString("utf8"); // convert Buffer → string
     await whook.verify(payload, {
       "svix-id": req.headers["svix-id"],
       "svix-timestamp": req.headers["svix-timestamp"],
